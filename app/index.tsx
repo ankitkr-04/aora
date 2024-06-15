@@ -5,7 +5,7 @@ export default function Index() {
     <View
   className="flex-1 items-center justify-center bg-gray-100"
     >
-      <Text className="text-xl">Edit app/index.tsx to edit this screen.</Text>
+      <Text className="text-2xl">Edit app/index.tsx to edit this screen.</Text>
     </View>
   );
 }
