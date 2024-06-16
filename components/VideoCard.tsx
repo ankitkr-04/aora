@@ -2,7 +2,7 @@ import { icons } from '@/constants';
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-interface VideoCardProps {
+export interface PostProps {
     item: {
         title: string;
         thumbnail: string;
@@ -15,7 +15,7 @@ interface VideoCardProps {
     };
 }
 
-const VideoCard: React.FC<VideoCardProps> = ({ item }) => {
+const VideoCard: React.FC<PostProps> = ({ item }) => {
     // console.log(item);
 
     const { title, thumbnail, prompt, video: videoUrl, users: { username, avatar } } = item;
