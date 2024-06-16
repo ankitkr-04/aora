@@ -3,7 +3,7 @@ import SearchInput from '@/components/SearchInput'
 import Trending from '@/components/Trending'
 import VideoCard from '@/components/VideoCard'
 import { images } from '@/constants'
-import { getAllPost } from '@/lib/appwrite'
+import { getAllPost, getLatestPosts } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Home = () => {
   const { data: posts, loading, refetch } = useAppwrite(getAllPost);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
 
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -22,7 +23,7 @@ const Home = () => {
     setRefreshing(false);
   }
 
-  
+
   return (
     <SafeAreaView className='bg-primary h-full'>
       <FlatList
@@ -60,7 +61,7 @@ const Home = () => {
               <Text className='text-gray-100 text-lg font-pregular mb-3'>
                 Trending Videos
               </Text>
-              <Trending posts={[{ id: '1' }, { id: '2' }, { id: '3' }] ?? []} />
+              <Trending posts={latestPosts} />
             </View>
 
           </View>

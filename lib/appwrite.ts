@@ -100,3 +100,18 @@ export const getAllPost = async () => {
         throw new Error();
     }
 }
+
+export const getLatestPosts = async () => {
+    try {
+        const posts = await db.listDocuments(
+            databaseId,
+            videosCollectionId,
+            [Query.orderDesc('$createdAt'), Query.limit(7)]
+        )
+        if (!posts) throw new Error();
+        return posts.documents;
+    } catch (error) {
+        console.log(error);
+        throw new Error();
+    }
+}
