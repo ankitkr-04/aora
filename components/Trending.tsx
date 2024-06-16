@@ -3,13 +3,16 @@ import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Animatable from 'react-native-animatable';
 import { icons } from '@/constants';
+import { Video, ResizeMode } from 'expo-av';
+import VideoPlayer from './VideoPlayer';
+import { PostProps } from './VideoCard';
 
 const zoomIn = {
   0: {
     scale: 0.9,
   },
   1: {
-    scale: 1.1,
+    scale: 1.0,
   },
 };
 
@@ -22,9 +25,10 @@ const zoomOut = {
   },
 };
 
-const TrendingItem = ({ activeItem, item }: { activeItem: any, item: any }) => {
+const TrendingItem = ({ activeItem, item, onClick }: { activeItem: any, item: PostProps, onClick: (id: any) => void }) => {
   const [playing, setPlaying] = useState<boolean>(false);
-  
+  // console.log(item.video);
+
   return (
     <Animatable.View
       className="mr-2"
@@ -32,12 +36,16 @@ const TrendingItem = ({ activeItem, item }: { activeItem: any, item: any }) => {
       duration={500}
     >
       {playing ? (
-        <Text className="text-white">Playing</Text>
+        <VideoPlayer videoUrl={item.video} styles='w-48 h-64 rounded-[35px] ' setPlaying={setPlaying} />
       ) : (
         <TouchableOpacity
           className="relative justify-center items-center"
           activeOpacity={0.7}
-          onPress={() => setPlaying(true)}
+          onPress={() => {
+            onClick(item.$id);
+
+            setPlaying(true)
+          }}
         >
           <ImageBackground
             source={{ uri: item.thumbnail }}
@@ -54,7 +62,7 @@ const TrendingItem = ({ activeItem, item }: { activeItem: any, item: any }) => {
 const Trending = ({ posts }: { posts: any[] }) => {
   const [activeItem, setActiveItem] = useState<any>(posts[0]);
 
-  
+
 
   const viewableItemsChanged = ({ viewableItems }: { viewableItems: any }) => {
     if (viewableItems.length > 0) {
@@ -69,13 +77,13 @@ const Trending = ({ posts }: { posts: any[] }) => {
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <TrendingItem item={item} activeItem={activeItem} />
+          <TrendingItem item={item} activeItem={activeItem} onClick={(id: any) => setActiveItem(id)} />
         )}
         onViewableItemsChanged={viewableItemsChanged}
         viewabilityConfig={{
           itemVisiblePercentThreshold: 70,
         }}
-        contentOffset={{ x: 170, y : 0 }}
+        contentOffset={{ x: 170, y: 0 }}
       />
     </SafeAreaView>
   );

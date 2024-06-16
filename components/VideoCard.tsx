@@ -1,21 +1,26 @@
 import { icons } from '@/constants';
+
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import VideoPlayer from './VideoPlayer';
 
 export interface PostProps {
-    item: {
-        title: string;
-        thumbnail: string;
-        prompt: string;
-        video: string;
-        users: {
-            username: string;
-            avatar: string;
-        };
+    $id: string;
+    title: string;
+    thumbnail: string;
+    prompt: string;
+    video: string;
+    users: {
+        username: string;
+        avatar: string;
     };
-}
 
-const VideoCard: React.FC<PostProps> = ({ item }) => {
+}
+export interface PostsProps {
+    item: PostProps;
+};
+
+const VideoCard: React.FC<PostsProps> = ({ item }) => {
     // console.log(item);
 
     const { title, thumbnail, prompt, video: videoUrl, users: { username, avatar } } = item;
@@ -46,7 +51,7 @@ const VideoCard: React.FC<PostProps> = ({ item }) => {
                 </View>
             </View>
             {playing ? (
-                <Text className='text-white '>Playing</Text>
+                <VideoPlayer videoUrl={videoUrl} styles='w-full h-60 rounded-xl' setPlaying={setPlaying} />
             ) : (
 
                 <TouchableOpacity
