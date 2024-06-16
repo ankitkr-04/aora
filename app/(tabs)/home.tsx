@@ -1,16 +1,25 @@
-import { View, Text, FlatList, Image } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { StatusBar } from 'expo-status-bar'
-import { images } from '@/constants'
+import EmptyState from '@/components/EmptyState'
 import SearchInput from '@/components/SearchInput'
+import Trending from '@/components/Trending'
+import { images } from '@/constants'
+import { StatusBar } from 'expo-status-bar'
+import React, { useState } from 'react'
+import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Home = () => {
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }
   return (
-    <SafeAreaView className='bg-primary'>
+    <SafeAreaView className='bg-primary h-full'>
       <FlatList
         className=''
-        data={[{ key: 'a' }, { key: 'b' }]}
+        data={[{ key: 'a' }, { key: 'b' }, { key: 'c' }]}
         keyExtractor={(item) => item.key}
 
         renderItem={({ item }) => (
@@ -42,12 +51,21 @@ const Home = () => {
               <Text className='text-gray-100 text-lg font-pregular mb-3'>
                 Trending Videos
               </Text>
+              <Trending posts={[{ id: '1' }, { id: '2' }, { id: '3' }] ?? []} />
             </View>
 
           </View>
         )}
+        ListEmptyComponent={() => (
+          <EmptyState
+            title='No Videos Found'
+            subtitle='Be the First one to upload a video'
+          />)}
+
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 
       />
+
       <StatusBar style='light' backgroundColor='#161622'></StatusBar>
     </SafeAreaView>
   )
