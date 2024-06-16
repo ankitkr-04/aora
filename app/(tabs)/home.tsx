@@ -2,12 +2,17 @@ import EmptyState from '@/components/EmptyState'
 import SearchInput from '@/components/SearchInput'
 import Trending from '@/components/Trending'
 import { images } from '@/constants'
+import { getAllPost } from '@/lib/appwrite'
+import useAppwrite from '@/lib/useAppwrite'
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
 import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Home = () => {
+  const {data: posts, loading} = useAppwrite(getAllPost);
+  
+
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const onRefresh = async () => {
     setRefreshing(true);
