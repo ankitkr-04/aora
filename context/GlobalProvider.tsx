@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/lib/appwrite";
 export interface GlobalProps {
   isLogged: boolean;
   setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
-  user: any; // Define a specific type for user if possible
+  user: any; 
   setUser: React.Dispatch<React.SetStateAction<any>>;
   loading: boolean;
 }
@@ -26,7 +26,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 // GlobalProvider component
 const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLogged, setIsLogged] = useState<boolean>(false);
-  const [user, setUser] = useState<any>(null); // Replace 'any' with specific user type if known
+  const [user, setUser] = useState<any>(null); 
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
