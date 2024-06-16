@@ -1,6 +1,7 @@
 import EmptyState from '@/components/EmptyState'
 import SearchInput from '@/components/SearchInput'
 import Trending from '@/components/Trending'
+import VideoCard from '@/components/VideoCard'
 import { images } from '@/constants'
 import { getAllPost } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
@@ -9,26 +10,29 @@ import React, { useState } from 'react'
 import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+
 const Home = () => {
-  const {data: posts, loading} = useAppwrite(getAllPost);
-  
+  const { data: posts, loading, refetch } = useAppwrite(getAllPost);
+
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    await refetch();
+    setRefreshing(false);
   }
+
+  
   return (
     <SafeAreaView className='bg-primary h-full'>
       <FlatList
         className=''
-        data={[{ key: 'a' }, { key: 'b' }, { key: 'c' }]}
-        keyExtractor={(item) => item.key}
+        data={posts}
+        keyExtractor={(item) => item.$id}
 
         renderItem={({ item }) => (
-          <Text className='text-white text-3xl'>{item.key}</Text>
+          <VideoCard item={item} />
+          // <Text className='text-white'>{item.title}</Text>
         )}
 
         ListHeaderComponent={() => (
