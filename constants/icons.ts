@@ -11,7 +11,7 @@ import logout from "../assets/icons/logout.png";
 import eyeHide from "../assets/icons/eye-hide.png";
 import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
-
+import love from '@/assets/icons/love.png';
 export default {
   play,
   bookmark,
@@ -26,4 +26,5 @@ export default {
   logout,
   eyeHide,
   eye,
+  love
 };

@@ -149,15 +149,15 @@ export const getUserPosts = async (userId: string) => {
     }
 }
 
-export const getLikedPost = async (userId: string) => { 
+export const getLikedPost = async (userId: string) => {
     try {
         console.log(userId);
-        
+
         const posts = await db.listDocuments(
             databaseId,
             videosCollectionId,
             // [Query.equal('likedBy', [userId])]
-           
+
         )
 
         const likedPosts = posts.documents.filter(post => post.likedBy && post.likedBy.some((like: any) => like.$id === userId));
@@ -210,7 +210,7 @@ export const uploadFile = async (file: any, type: any) => {
     }
 
     console.log(asset);
-    
+
     try {
         const uploadedFile = await storage.createFile(
             storageId,
@@ -257,4 +257,40 @@ export const createVideo = async (form: any) => {
     } catch (error: any) {
         throw new Error('Failed Creating Post', error.message || 'An error occurred while creating post');
     }
+}
+
+
+export const likePost = async (postId: string, user: any) => {
+    try {
+        const post = await db.getDocument(databaseId, videosCollectionId, postId);
+        console.log(post);
+        console.log(user);
+        
+        
+
+        const res = await db.updateDocument(databaseId, videosCollectionId, postId, {
+            ...post,
+            likedBy: [...post.likedBy, { $id: user.$id }]
+
+        })
+
+        console.log(res);
+
+        return res;
+    } catch (error: any) {
+        throw new Error('Failed Liking Post', error.message || 'An error occurred while liking post');
+    }
+}
+
+export const unlikePost = async (postId: string, user: any) => {
+    try {
+        const post = await db.getDocument(databaseId, videosCollectionId, postId);
+        console.log(post);
+        
+        return null;
+    } catch (error: any) {
+        throw new Error('Failed Unliking Post', error.message || 'An error occurred while unliking post');
+
+    }
+
 }
