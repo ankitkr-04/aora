@@ -63,9 +63,9 @@ export const signIn = async (email: string, password: string) => {
         const session = await account.createEmailPasswordSession(email, password);
         if (!session) throw new Error();
         return session;
-    } catch (error) {
+    } catch (error: any) {
         console.log(error);
-        throw new Error();
+        throw new Error(error.message || 'An error occurred while signing in')
     }
 }
 
@@ -125,6 +125,31 @@ export const searchPost = async (query: string) => {
         )
         if (!posts) throw new Error("No Videos Found");
         return posts.documents;
+    } catch (error) {
+        console.log(error);
+        throw new Error();
+    }
+}
+
+export const getUserPosts = async (userId: string) => {
+    try {
+        const posts = await db.listDocuments(
+            databaseId,
+            videosCollectionId,
+            [Query.equal('users', userId)]
+        )
+        if (!posts) throw new Error("No Videos Found");
+        return posts.documents;
+    } catch (error) {
+        console.log(error);
+        throw new Error();
+    }
+}
+
+export const signOut = async () => {
+    try {
+        const session = await account.deleteSession('current');
+        return session;
     } catch (error) {
         console.log(error);
         throw new Error();

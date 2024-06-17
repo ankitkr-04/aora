@@ -7,8 +7,9 @@ import { images } from '@/constants';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
 import { Link } from 'expo-router';
-import { signIn } from '@/lib/appwrite';
+import { getCurrentUser, signIn } from '@/lib/appwrite';
 import useForm, { FormState } from '@/lib/useForm';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 interface SignInFormState extends FormState {
   email: string;
@@ -16,10 +17,16 @@ interface SignInFormState extends FormState {
 }
 
 const SignIn = () => {
+  const { setIsLogged, setUser } = useGlobalContext();
+
+
   const { form, isSubmitting, handleChange, handleSubmit } = useForm<SignInFormState>({
     initialState: { email: '', password: '' },
     onSubmit: async ({ email, password }) => {
       await signIn(email, password);
+      const currUser = getCurrentUser();
+      setIsLogged(true);
+      setUser(currUser);
     }
   });
 

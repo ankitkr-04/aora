@@ -9,6 +9,7 @@ import CustomButton from '@/components/CustomButton';
 import { Link } from 'expo-router';
 import { createUser } from '@/lib/appwrite';
 import useForm, { FormState } from '@/lib/useForm';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 interface SignUpFormState extends FormState {
   username: string;
@@ -17,10 +18,13 @@ interface SignUpFormState extends FormState {
 }
 
 const SignUp = () => {
+  const { setIsLogged, setUser } = useGlobalContext();
   const { form, isSubmitting, handleChange, handleSubmit } = useForm<SignUpFormState>({
     initialState: { username: '', email: '', password: '' },
     onSubmit: async ({ username, email, password }) => {
-      await createUser(email, password, username);
+      const currUser = await createUser(email, password, username);
+      setIsLogged(true);
+      setUser(currUser);
     }
   });
 

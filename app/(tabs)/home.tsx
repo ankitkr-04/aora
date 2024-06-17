@@ -9,10 +9,12 @@ import VideoCard, { PostsProps } from '@/components/VideoCard';
 import { images } from '@/constants';
 import { getAllPost, getLatestPosts } from '@/lib/appwrite';
 import useAppwrite from '@/lib/useAppwrite';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const Home = () => {
   const { data: posts, loading, refetch } = useAppwrite(getAllPost);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
+  const {user} = useGlobalContext();
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -39,7 +41,7 @@ const Home = () => {
                   Welcome back,
                 </Text>
                 <Text className='font-psemibold text-white text-2xl'>
-                  Ankit Kumar
+                  {user?.username}
                 </Text>
               </View>
               <View className='mt-1.5'>

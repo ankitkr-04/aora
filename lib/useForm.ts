@@ -13,6 +13,7 @@ interface UseFormProps<T extends FormState> {
 }
 
 const useForm = <T extends FormState>({ initialState, onSubmit }: UseFormProps<T>) => {
+  
   const [form, setForm] = useState<T>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -21,6 +22,7 @@ const useForm = <T extends FormState>({ initialState, onSubmit }: UseFormProps<T
   };
 
   const handleSubmit = async () => {
+   
     const isEmptyField = Object.values(form).some((value) => !value);
 
     if (isEmptyField) {
@@ -31,6 +33,8 @@ const useForm = <T extends FormState>({ initialState, onSubmit }: UseFormProps<T
     setIsSubmitting(true);
     try {
       await onSubmit(form);
+      
+      
       router.replace('/home');
     } catch (error: any) {
       Alert.alert('Error', error.message);
