@@ -27,6 +27,7 @@ const FormField: React.FC<FormFieldProps> = ({ title, value, placeholder, handle
                     placeholder={placeholder}
                     onChangeText={handleChange}
                     secureTextEntry={title === 'Password' && !showPass}
+                    placeholderTextColor={'#8D8D8D'}
 
                 />
                 {title === 'Password' && (
