@@ -31,6 +31,7 @@ const VideoCard: React.FC<PostsProps> = ({ item }) => {
     const [playing, setPlaying] = useState<boolean>(false);
 
 
+
     return (
         <View className='flex-col items-center px-4 mb-14'>
             <View className='flex-row gap-3 items-start'>

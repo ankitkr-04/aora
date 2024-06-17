@@ -149,6 +149,27 @@ export const getUserPosts = async (userId: string) => {
     }
 }
 
+export const getLikedPost = async (userId: string) => { 
+    try {
+        console.log(userId);
+        
+        const posts = await db.listDocuments(
+            databaseId,
+            videosCollectionId,
+            // [Query.equal('likedBy', [userId])]
+           
+        )
+
+        const likedPosts = posts.documents.filter(post => post.likedBy && post.likedBy.some((like: any) => like.$id === userId));
+        if (likedPosts.length === 0) throw new Error("No Videos Found");
+        return likedPosts;
+    } catch (error: any) {
+        console.log(error);
+        throw new Error(error.message || 'An error occurred while fetching liked posts');
+    }
+
+}
+
 export const signOut = async () => {
     try {
         const session = await account.deleteSession('current');
