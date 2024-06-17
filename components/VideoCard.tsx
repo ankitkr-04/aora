@@ -3,6 +3,7 @@ import { icons } from '@/constants';
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import VideoPlayer from './VideoPlayer';
+import { Models } from 'react-native-appwrite';
 
 export interface PostProps {
     $id: string;
@@ -16,14 +17,16 @@ export interface PostProps {
     };
 
 }
-export interface PostsProps {
+
+export interface PostsProps{
     item: PostProps;
-};
+}
+
 
 const VideoCard: React.FC<PostsProps> = ({ item }) => {
     // console.log(item);
 
-    const { title, thumbnail, prompt, video: videoUrl, users: { username, avatar } } = item;
+    const { title, thumbnail, prompt, video: videoUrl, users: { username, avatar },  } = item;
 
     const [playing, setPlaying] = useState<boolean>(false);
 

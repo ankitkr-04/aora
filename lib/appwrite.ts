@@ -115,3 +115,18 @@ export const getLatestPosts = async () => {
         throw new Error();
     }
 }
+
+export const searchPost = async (query: string) => {
+    try {
+        const posts = await db.listDocuments(
+            databaseId,
+            videosCollectionId,
+            [Query.search('title', query)]
+        )
+        if (!posts) throw new Error("No Videos Found");
+        return posts.documents;
+    } catch (error) {
+        console.log(error);
+        throw new Error();
+    }
+}

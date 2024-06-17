@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
+import { Models } from 'react-native-appwrite';
 
-const useAppwrite = (fn: () => Promise<any[]>): { data: any[]; loading: boolean; refetch: () => Promise<void> } => {
+// Define the type for the function parameter
+type FetchFunction = () => Promise<any[]>;
+
+const useAppwrite = (fn: FetchFunction): { data: any[]; loading: boolean; refetch: () => Promise<void> } => {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+
     const fetchData = async () => {
         setLoading(true);
         try {
