@@ -1,12 +1,10 @@
 import { icons } from '@/constants';
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Pressable, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import VideoPlayer from './VideoPlayer';
-import { Models } from 'react-native-appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
-import useAppwrite from '@/lib/useAppwrite';
 import { likePost, unlikePost } from '@/lib/appwrite';
 
 export interface PostProps {
@@ -43,7 +41,6 @@ const VideoCard: React.FC<PostsProps> = ({ item }) => {
 
     useEffect(() => {
         if (user) {
-
             const isLiked = item.likedBy.some(like => like.$id === user.$id);
             setSaved(isLiked);
         }
@@ -65,7 +62,7 @@ const VideoCard: React.FC<PostsProps> = ({ item }) => {
         } else {
             try {
                 await likePost(item.$id, user);
-                setSaved(false);
+                setSaved(true);
             }
             catch (error: any) {
                 throw new Error('Failed Liking Post', error.message || 'An error occurred while Liking post');

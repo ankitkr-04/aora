@@ -1,13 +1,11 @@
 import EmptyState from '@/components/EmptyState'
-import SearchInput from '@/components/SearchInput'
 import VideoCard from '@/components/VideoCard'
 import { useGlobalContext } from '@/context/GlobalProvider'
-import { getAllPost, getLikedPost, searchPost } from '@/lib/appwrite'
+import { getLikedPost } from '@/lib/appwrite'
 import useAppwrite from '@/lib/useAppwrite'
-import { useLocalSearchParams } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect } from 'react'
-import { FlatList, Text, View } from 'react-native'
+import React from 'react'
+import { FlatList, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 
@@ -17,6 +15,14 @@ const Search = () => {
 
   const { data: posts, loading, refetch } = useAppwrite(() => getLikedPost(user?.$id));
 
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
+
+  
   return (
     <SafeAreaView className='bg-primary h-full'>
       <FlatList
@@ -48,6 +54,7 @@ const Search = () => {
             subtitle='Nothing to see here, try searching for something else.'
           />)}
 
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 
       />
 

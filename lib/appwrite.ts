@@ -96,7 +96,7 @@ export const getAllPost = async () => {
             videosCollectionId,
             [Query.orderDesc('$createdAt')]
         )
-        if (!posts) throw new Error();
+        if (!posts) return [];
         return posts.documents;
     } catch (error) {
         console.log(error);
@@ -111,7 +111,7 @@ export const getLatestPosts = async () => {
             videosCollectionId,
             [Query.orderDesc('$createdAt'), Query.limit(7)]
         )
-        if (!posts) throw new Error();
+        if (!posts) return [];
         return posts.documents;
     } catch (error) {
         console.log(error);
@@ -126,7 +126,7 @@ export const searchPost = async (query: string) => {
             videosCollectionId,
             [Query.search('title', query)]
         )
-        if (!posts) throw new Error("No Videos Found");
+        if (!posts) return [];
         return posts.documents;
     } catch (error) {
         console.log(error);
@@ -141,7 +141,7 @@ export const getUserPosts = async (userId: string) => {
             videosCollectionId,
             [Query.equal('users', userId)]
         )
-        if (!posts) throw new Error("No Videos Found");
+        if (!posts) return [];
         return posts.documents;
     } catch (error) {
         console.log(error);
@@ -161,7 +161,7 @@ export const getLikedPost = async (userId: string) => {
         )
 
         const likedPosts = posts.documents.filter(post => post.likedBy && post.likedBy.some((like: any) => like.$id === userId));
-        if (likedPosts.length === 0) throw new Error("No Videos Found");
+        if (likedPosts.length === 0) return [];
         return likedPosts;
     } catch (error: any) {
         console.log(error);
@@ -263,34 +263,39 @@ export const createVideo = async (form: any) => {
 export const likePost = async (postId: string, user: any) => {
     try {
         const post = await db.getDocument(databaseId, videosCollectionId, postId);
-        console.log(post);
-        console.log(user);
-        
-        
+      
+
+        const likedBy = post.likedBy || [];
+        const isUserLiked = likedBy.some((likedUser: any) => likedUser.$id === user.$id);
+
+        if (isUserLiked) return post;
+
+        const updatedLikedBy = [...likedBy, user];
 
         const res = await db.updateDocument(databaseId, videosCollectionId, postId, {
-            ...post,
-            likedBy: [...post.likedBy, { $id: user.$id }]
-
-        })
-
-        console.log(res);
+            likedBy: updatedLikedBy
+        });
 
         return res;
     } catch (error: any) {
-        throw new Error('Failed Liking Post', error.message || 'An error occurred while liking post');
+        console.error(error);
+        throw new Error(`Failed Liking Post: ${error.message || 'An error occurred while liking the post'}`);
     }
-}
+};
 
 export const unlikePost = async (postId: string, user: any) => {
     try {
         const post = await db.getDocument(databaseId, videosCollectionId, postId);
-        console.log(post);
-        
-        return null;
+        const likedBy = post.likedBy || [];
+        const updatedLikedBy = likedBy.filter((likedUser: any) => likedUser.$id !== user.$id);
+
+        const res = await db.updateDocument(databaseId, videosCollectionId, postId, {
+            likedBy: updatedLikedBy
+        });
+
+        return res;
     } catch (error: any) {
-        throw new Error('Failed Unliking Post', error.message || 'An error occurred while unliking post');
-
+        console.error(error);
+        throw new Error(`Failed Unliking Post: ${error.message || 'An error occurred while unliking the post'}`);
     }
-
-}
+};
