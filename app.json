@@ -8,9 +8,10 @@
     "scheme": "aora",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/logo-small.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      
+      "backgroundColor": "#161622"
     },
     "ios": {
       "supportsTablet": true
@@ -18,8 +19,8 @@
     "android": {
       "package": "com.ankittechie.aora",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/logo-small.png",
+        "backgroundColor": "#161622"
       },
       "permissions": [
         "android.permission.RECORD_AUDIO",

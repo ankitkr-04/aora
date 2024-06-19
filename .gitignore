@@ -19,4 +19,5 @@ web-build/
 expo-env.d.ts
 nativewind-env.d.ts
 assets-env.d.ts
+config.ts
 # @end expo-cli

@@ -1,15 +1,7 @@
 import { FormProps } from '@/app/(tabs)/create';
+import { appwriteConfig } from '@/config';
 import { Account, Avatars, Client, Databases, ID, ImageGravity, Query, Storage } from 'react-native-appwrite';
 
-export const appwriteConfig = {
-    endpoint: 'https://cloud.appwrite.io/v1',
-    platform: 'com.ankittechie.aora',
-    projectId: '666d5fe40024f50e9fc9',
-    databaseId: '666d6217002739596eaf',
-    userCollectionId: '666d6255003370492cc3',
-    videosCollectionId: '666d627400349d07fe07',
-    storageId: '666d63fb0005760b804f',
-}
 
 const { endpoint, projectId, platform, databaseId, userCollectionId, videosCollectionId, storageId } = appwriteConfig;
 
